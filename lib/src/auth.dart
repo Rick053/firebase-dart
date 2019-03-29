@@ -105,6 +105,17 @@ class User extends UserInfo<firebase_interop.UserJsImpl> {
   Future<String> getIdToken([bool forceRefresh = false]) =>
       handleThenable(jsObject.getIdToken(forceRefresh));
 
+  /// Returns an [IdTokenResult].
+  ///
+  /// Returns the current token if it has not expired, otherwise this will
+  /// refresh the token and return a new one.
+  ///
+  /// It forces refresh regardless of token expiration if [forceRefresh]
+  /// parameter is `true`.
+  Future<IdTokenResult> getIdTokenResult([bool forceRefresh = false]) =>
+      handleThenable(jsObject.getIdTokenResult(forceRefresh))
+        .then((r) => IdTokenResult.fromJsObject(r));
+
   /// Links the user account with the given credentials, and returns any
   /// available additional user information, such as user name.
   Future<UserCredential> linkAndRetrieveDataWithCredential(
@@ -922,4 +933,37 @@ class AdditionalUserInfo extends JsObjectWrapper<AdditionalUserInfoJsImpl> {
   /// Creates a new AdditionalUserInfo from a [jsObject].
   AdditionalUserInfo.fromJsObject(AdditionalUserInfoJsImpl jsObject)
       : super.fromJsObject(jsObject);
+}
+
+/// A structure containing the ID token JWT string and other helper properties
+/// for getting different data associated with the token as well as all the
+/// decoded payload claims.
+/// See: <https://firebase.google.com/docs/reference/js/firebase.auth.IDTokenResult>
+class IdTokenResult extends JsObjectWrapper<IdTokenResultJsImpl> {
+  /// Returns the auth time formatted as a UTC string.
+  String get authTime => jsObject.authTime;
+
+  /// Returns the expiration time of the token formatted as a UTC string.
+  String get expirationTime => jsObject.expirationTime;
+
+  /// Returns the time the token was issued at formatted as a UTC string.
+  String get issuedAtTime => jsObject.issuedAtTime;
+
+  /// Returns the sign-in provider through which the ID token was obtained
+  /// (anonymous, custom, phone, password, etc).
+  ///
+  /// Note, this does not map to provider IDs.
+  String get signInProvider => jsObject.signInProvider;
+
+  /// Returns the JWT string of the ID token.
+  String get token => jsObject.token;
+
+  /// Returns the entire payload claims of the ID token including the standard
+  /// reserved claims as well as the custom claims.
+  Map<String, dynamic> get claims => dartify(jsObject.claims);
+
+  /// Creates a new IdTokenResult from a [jsObject].
+  IdTokenResult.fromJsObject(IdTokenResultJsImpl jsObject)
+      : super.fromJsObject(jsObject);
+
 }
