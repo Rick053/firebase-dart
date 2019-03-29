@@ -307,3 +307,15 @@ class AdditionalUserInfoJsImpl {
   external String get username;
   external bool get isNewUser;
 }
+
+/// https://firebase.google.com/docs/reference/js/firebase.auth.IDTokenResult
+@JS()
+@anonymous
+class IdTokenResultJsImpl {
+  external String get authTime;
+  external Object get claims;
+  external String get expirationTime;
+  external String get issuedAtTime;
+  external String get signInProvider;
+  external String get token;
+}

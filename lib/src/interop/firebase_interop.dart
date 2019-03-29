@@ -48,6 +48,7 @@ abstract class UserJsImpl extends UserInfoJsImpl {
   external UserMetadata get metadata;
   external PromiseJsImpl delete();
   external PromiseJsImpl<String> getIdToken([bool opt_forceRefresh]);
+  external PromiseJsImpl<IdTokenResultJsImpl> getIdTokenResult([bool opt_forceRefresh]);
   external PromiseJsImpl<UserCredentialJsImpl>
       linkAndRetrieveDataWithCredential(AuthCredential credential);
 
